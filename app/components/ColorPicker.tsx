@@ -9,26 +9,34 @@ interface ColorPickerProps {
 
 export function ColorPicker({ color, onChange, showPicker, onToggle }: ColorPickerProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div 
-        className="w-full h-10 cursor-pointer border border-gray-600"
-        style={{ backgroundColor: color }}
+    <div className="relative">
+      <button
         onClick={onToggle}
-      />
+        className="w-full p-2 flex items-center gap-2 bg-gray-700 border border-gray-600 rounded"
+      >
+        <div 
+          className="w-6 h-6 rounded border border-gray-600" 
+          style={{ backgroundColor: color }}
+        />
+        <span className="text-white">{color}</span>
+      </button>
+      
       {showPicker && (
-        <div className="absolute z-10 -translate-y-[280px]">
+        <div className="absolute z-50 mt-2">
+          <div
+            className="fixed inset-0"
+            onClick={onToggle}
+          />
           <HexColorPicker
             color={color}
             onChange={onChange}
+            style={{ 
+              position: 'relative',
+              zIndex: 51
+            }}
           />
         </div>
       )}
-      <input
-        type="text"
-        value={color}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full p-2 border bg-gray-700 text-white border-gray-600"
-      />
     </div>
   );
 } 

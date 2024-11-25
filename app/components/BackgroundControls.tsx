@@ -1,18 +1,11 @@
-import { HexColorPicker } from 'react-colorful';
 import { ColorPicker } from './ColorPicker';
 import { useState } from 'react';
+import { LogoState } from '../types/LogoState';
 
 interface BackgroundControlsProps {
-  logoState: {
-    backgroundColor: string;
-    borderRadius: number;
-    transparent: boolean;
-    paddingTop: number;
-    paddingRight: number;
-    paddingBottom: number;
-    paddingLeft: number;
-  };
-  setLogoState: (state: any) => void;
+  logoState: Pick<LogoState, 'backgroundFill' | 'borderRadius' | 'transparent' | 
+    'paddingTop' | 'paddingRight' | 'paddingBottom' | 'paddingLeft'>;
+  setLogoState: (state: Partial<LogoState>) => void;
 }
 
 export function BackgroundControls({ logoState, setLogoState }: BackgroundControlsProps) {
@@ -35,8 +28,8 @@ export function BackgroundControls({ logoState, setLogoState }: BackgroundContro
         {!logoState.transparent && (
           <>
             <ColorPicker
-              color={logoState.backgroundColor}
-              onChange={(color) => setLogoState({ ...logoState, backgroundColor: color })}
+              color={logoState.backgroundFill}
+              onChange={(color) => setLogoState({ ...logoState, backgroundFill: color })}
               showPicker={showBackgroundColorPicker}
               onToggle={() => setShowBackgroundColorPicker(!showBackgroundColorPicker)}
             />
@@ -49,7 +42,7 @@ export function BackgroundControls({ logoState, setLogoState }: BackgroundContro
         <input
           type="range"
           min="0"
-          max="50"
+          max="300"
           value={logoState.borderRadius}
           onChange={(e) => setLogoState({ ...logoState, borderRadius: Number(e.target.value) })}
           className="w-full accent-blue-500"

@@ -8,13 +8,13 @@ export function DownloadOptions({ canvasRef }: DownloadOptionsProps) {
   const handleDownload = async (format: 'svg' | 'png' | 'jpg') => {
     if (!canvasRef.current) return;
     
-    const contentElement = canvasRef.current.querySelector('div[style*="padding"]');
+    const contentElement = canvasRef.current?.querySelector('div[style]') as HTMLDivElement;
     if (!contentElement) return;
 
     if (format === 'svg') {
       // Get the icon and text elements
-      const iconElement = contentElement.querySelector('[data-icon]');
-      const textElement = contentElement.querySelector('[data-text]');
+      const iconElement = contentElement.querySelector('[data-icon]') as HTMLDivElement;
+      const textElement = contentElement.querySelector('[data-text]') as HTMLDivElement;
       
       const svgData = `
         <svg xmlns="http://www.w3.org/2000/svg" width="${contentElement.offsetWidth}" height="${contentElement.offsetHeight}">
@@ -82,25 +82,27 @@ export function DownloadOptions({ canvasRef }: DownloadOptionsProps) {
   };
 
   return (
-    <div className="flex mt-4 gap-2">
-      <button
-        onClick={() => handleDownload('png')}
-        className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600"
-      >
-        Download PNG
-      </button>
-      <button
-        onClick={() => handleDownload('jpg')}
-        className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600"
-      >
-        Download JPG
-      </button>
-      <button
-        onClick={() => handleDownload('svg')}
-        className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600"
-      >
-        Download SVG
-      </button>
+    <div className="flex gap-3">
+      {[
+        { format: 'png', label: 'Download PNG' },
+        { format: 'jpg', label: 'Download JPG' },
+        { format: 'svg', label: 'Download SVG' }
+      ].map(({ format, label }) => (
+        <button
+          key={format}
+          onClick={() => handleDownload(format as 'png' | 'jpg' | 'svg')}
+          className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 
+                   text-white rounded-lg transition-all duration-200 transform hover:scale-105
+                   shadow-lg hover:shadow-blue-500/50 active:scale-95"
+        >
+          <span className="mr-2">
+            {format === 'png' && '🖼️'}
+            {format === 'jpg' && '📸'}
+            {format === 'svg' && '⚡'}
+          </span>
+          {label}
+        </button>
+      ))}
     </div>
   );
 } 

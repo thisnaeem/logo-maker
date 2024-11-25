@@ -1,20 +1,25 @@
 import { Tab } from '@headlessui/react';
 
+type TabType = 'text' | 'icon' | 'stacking' | 'background';
+
 interface TabSelectorProps {
-  activeTab: 'text' | 'icon' | 'stacking' | 'background';
-  setActiveTab: (tab: 'text' | 'icon' | 'stacking' | 'background') => void;
+  activeTab: TabType;
+  setActiveTab: (tab: TabType) => void;
 }
 
 export function TabSelector({ activeTab, setActiveTab }: TabSelectorProps) {
   const tabs = [
-    { id: 'text', label: 'Text' },
-    { id: 'icon', label: 'Icon' },
-    { id: 'stacking', label: 'Stacking' },
-    { id: 'background', label: 'Background' },
-  ];
+    { id: 'text' as const, label: 'Text' },
+    { id: 'icon' as const, label: 'Icon' },
+    { id: 'stacking' as const, label: 'Stacking' },
+    { id: 'background' as const, label: 'Background' },
+  ] as const;
 
   return (
-    <Tab.Group selectedIndex={tabs.findIndex(tab => tab.id === activeTab)} onChange={(index) => setActiveTab(tabs[index].id as any)}>
+    <Tab.Group 
+      selectedIndex={tabs.findIndex(tab => tab.id === activeTab)} 
+      onChange={(index) => setActiveTab(tabs[index].id)}
+    >
       <Tab.List className="flex space-x-1  bg-gray-700/20 p-1">
         {tabs.map((tab) => (
           <Tab

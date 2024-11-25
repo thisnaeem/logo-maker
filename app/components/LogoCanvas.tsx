@@ -3,18 +3,17 @@ import * as Ai from 'react-icons/ai';
 import * as Bs from 'react-icons/bs';
 import * as Fa from 'react-icons/fa';
 import * as Hi from 'react-icons/hi';
-import { useRef, useEffect } from 'react';
-import { DownloadOptions } from './DownloadOptions';
+import {  useEffect } from 'react';
+import { LogoState } from '../types/LogoState';
+import { IconType } from "react-icons";
 
-const iconSets = {
-  fi: Fi,
-  ai: Ai,
-  bs: Bs,
-  fa: Fa,
-  hi: Hi
+
+
+type IconComponents = {
+  [key: `${string}-${string}`]: IconType;
 };
 
-const iconComponents = {
+const iconComponents: IconComponents = {
   'fi-home': Fi.FiHome,
   'fi-star': Fi.FiStar,
   'fi-heart': Fi.FiHeart,
@@ -74,44 +73,19 @@ const iconComponents = {
   'hi-camera': Hi.HiCamera,
   'hi-music-note': Hi.HiMusicNote,
   'hi-cloud': Hi.HiCloud
-};
+} as const;
 
 interface LogoCanvasProps {
-  logoState: {
-    text: string;
-    font: string;
-    fontSize: number;
-    textColor: string;
-    textX: number;
-    textY: number;
-    selectedIcon: string;
-    iconSize: number;
-    iconX: number;
-    iconY: number;
-    stackingOption: 'left' | 'right' | 'top' | 'bottom';
-    backgroundColor: string;
-    borderRadius: number;
-    showBackground: boolean;
-    backgroundPadding: number;
-    backgroundCornerRadius: number;
-    backgroundOpacity: number;
-    backgroundFill: string;
-    iconColor: string;
-    transparent: boolean;
-    fontWeight: number;
-    paddingTop: number;
-    paddingRight: number;
-    paddingBottom: number;
-    paddingLeft: number;
-    gap: number;
-  };
-  setLogoState: (state: any) => void;
+  logoState: LogoState;
   canvasRef: React.RefObject<HTMLDivElement>;
 }
 
-export function LogoCanvas({ logoState, setLogoState, canvasRef }: LogoCanvasProps) {
-  const getIconComponent = (iconId: string) => {
-    return iconComponents[iconId] || null;
+export function LogoCanvas({ logoState, canvasRef }: LogoCanvasProps) {
+  const getIconComponent = (iconId: string): IconType | null => {
+    if (iconId in iconComponents) {
+      return iconComponents[iconId as keyof typeof iconComponents];
+    }
+    return null;
   };
 
   const IconComponent = getIconComponent(logoState.selectedIcon);
@@ -124,7 +98,7 @@ export function LogoCanvas({ logoState, setLogoState, canvasRef }: LogoCanvasPro
   }, [logoState.font]);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full w-full flex flex-col">
       <div
         ref={canvasRef}
         className="flex-1 relative flex items-center justify-center"
@@ -150,7 +124,7 @@ export function LogoCanvas({ logoState, setLogoState, canvasRef }: LogoCanvasPro
               className="absolute inset-0"
               style={{
                 backgroundColor: logoState.backgroundFill,
-                borderRadius: `${logoState.backgroundCornerRadius}px`,
+                borderRadius: `${logoState.borderRadius}px`,
                 opacity: logoState.backgroundOpacity,
                 zIndex: 0,
               }}

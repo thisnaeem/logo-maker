@@ -1,8 +1,9 @@
 import { FiHome, FiStar, FiHeart, FiSettings, FiUser, FiMail, FiPhone, FiCamera, FiMusic, FiCloud, FiCoffee, FiBook, FiPenTool, FiGlobe, FiShoppingBag, FiTruck, FiMap, FiCalendar, FiPrinter, FiWifi, FiSun, FiMoon, FiUmbrella, FiCompass, FiAward, FiMoreHorizontal } from 'react-icons/fi';
 import { useState } from 'react';
-import { HexColorPicker } from 'react-colorful';
 import { ColorPicker } from './ColorPicker';
 import { IconModal } from './IconModal';
+import { LogoState } from '../types/LogoState';
+import Image from 'next/image';
 
 const reactIcons = [
   { id: 'fi-home', icon: <FiHome size={24} />, label: 'Home' },
@@ -33,14 +34,8 @@ const reactIcons = [
 ];
 
 interface IconControlsProps {
-  logoState: {
-    selectedIcon: string;
-    iconSize: number;
-    iconX: number;
-    iconY: number;
-    iconColor: string;
-  };
-  setLogoState: (state: any) => void;
+  logoState: Pick<LogoState, 'selectedIcon' | 'iconSize' | 'iconX' | 'iconY' | 'iconColor'>;
+  setLogoState: (state: Partial<LogoState>) => void;
 }
 
 export function IconControls({ logoState, setLogoState }: IconControlsProps) {
@@ -122,7 +117,14 @@ export function IconControls({ logoState, setLogoState }: IconControlsProps) {
                   }`}
                   onClick={() => setLogoState({ ...logoState, selectedIcon: url })}
                 >
-                  <img src={url} alt="Icon" className="w-6 h-6" />
+                  <Image 
+                    src={url} 
+                    alt="Icon" 
+                    width={24}
+                    height={24}
+                    className="w-6 h-6"
+                    unoptimized
+                  />
                 </button>
               ))
             )}

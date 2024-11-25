@@ -1,4 +1,3 @@
-import { IconType } from 'react-icons';
 import { useState } from 'react';
 import * as Fi from 'react-icons/fi';
 import * as Ai from 'react-icons/ai';

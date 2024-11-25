@@ -1,11 +1,8 @@
+import { LogoState } from '../types/LogoState';
+
 interface StackingControlsProps {
-  logoState: {
-    stackingOption: 'left' | 'right' | 'top' | 'bottom';
-    iconSize: number;
-    fontSize: number;
-    gap: number;
-  };
-  setLogoState: (state: any) => void;
+  logoState: Pick<LogoState, 'stackingOption' | 'iconSize' | 'fontSize' | 'gap'>;
+  setLogoState: (state: Partial<LogoState>) => void;
 }
 
 export function StackingControls({ logoState, setLogoState }: StackingControlsProps) {

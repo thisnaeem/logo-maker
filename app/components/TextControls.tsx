@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
-import { HexColorPicker } from 'react-colorful';
 import { ColorPicker } from './ColorPicker';
 
+type LogoState = {
+  text: string;
+  font: string;
+  fontSize: number;
+  textX: number;
+  textY: number;
+  textColor: string;
+  fontWeight: number;
+};
+
 interface TextControlsProps {
-  logoState: {
-    text: string;
-    font: string;
-    fontSize: number;
-    textX: number;
-    textY: number;
-    textColor: string;
-    fontWeight: number;
-  };
-  setLogoState: (state: any) => void;
+  logoState: LogoState;
+  setLogoState: (state: Partial<LogoState>) => void;
 }
 
 const GOOGLE_FONTS = [
